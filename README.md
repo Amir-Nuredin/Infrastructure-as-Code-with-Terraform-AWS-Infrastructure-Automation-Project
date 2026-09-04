@@ -86,6 +86,102 @@ IM11: Configuring AWS CLI with Account Info
 
 IM12: Confirming AWS CLI was Correctly Configured and Connected to AWS Account 
 
+### Part 4: Creating Terraform Project
+
+Now that I had all the tools for this project, I was ready to work. First, I needed to create the Terraform project I would be using. I first created the project folder in PowerShell by using the commands in IM13. I then opened VS Code to confirm the folder was created, and it was. I then created the six main files I would be using in the folder. Those being main.tf (main codebase), variables.tf (variable names for different AWS resources), outputs.tf, versions.tf, .gitignore (any sensitive information), and a README.md file as well (IM14). 
+
+<img width="643" height="312" alt="Screenshot 2026-08-31 184351" src="https://github.com/user-attachments/assets/8ae54bc0-98cd-405b-99bb-24b35b7a4783" />
+
+IM13: Creating Terraform Project Folder
+
+<img width="1453" height="213" alt="Screenshot 2026-08-31 184821" src="https://github.com/user-attachments/assets/d7da88d1-265f-42d2-bb79-c3eb9631f030" />
+
+IM14: Creating Terraform Project files
+
+### Part 5: Configuring AWS Provider
+
+This step was important because Terraform needed to know which infrastructure provider needed to be used; otherwise, the code wouldn't be applied to anything. First, I went to the versions..tf file and added the code shown in IM15. This told Terraform that I would use the official AWS provider from HashiCorp. Next I went to the main.tf file and wrote the code for which region the provider was in (us-east-1). 
+
+<img width="309" height="184" alt="Screenshot 2026-08-31 185111" src="https://github.com/user-attachments/assets/43aac616-31b9-4069-83c8-4f499f35c127" />
+
+IM15: Configuring AWS Provider in Terraform
+
+### Part 6: Terraform Initialization
+
+Now I needed to initialize the Terraform Project so that it could actually be used and also so that the AWS provider is referenced as well. I ran the command "terraform init" inside the VS Code terminal, and I got a message saying that initialization was complete (IM16). Now my Project was ready to be worked on. 
+
+<img width="577" height="184" alt="Screenshot 2026-08-31 185810" src="https://github.com/user-attachments/assets/34acf6b8-dc40-40c2-b889-389161274c7a" />
+
+IM16: Terraform Project Initialized 
+
+### Part 7: Creating VPC with Terraform
+
+Now I could start actually working with Terraform and create the AWS Infrastructure with code. I planned to create a basic VPC with all the necessary components, then also created an EC2 instance and attached the VPC and Security Group to it. All of this main code would go into the "main.tf" file. First is the VPC. The code for the VPC can be seen in IM17. I defined the resource being created, the private IP range for the VPC, and the name for it in AWS as well. 
+
+<img width="350" height="300" alt="Screenshot 2026-09-01 181003" src="https://github.com/user-attachments/assets/62f64caf-83cd-4048-ac39-bc8b6c6c3f81" />
+
+IM17: VPC Terraform Code
+
+### Part 8: Creating Subnet with Terraform
+
+Next, I created the subnet for the VPC. The code for the subnet can be seen in IM18. For the subnet, I needed to reference the VPC associated with this subnet, the CIDR block for this subnet, the availability zone, and a tag at the end as well. 
+
+<img width="315" height="290" alt="Screenshot 2026-09-01 181012" src="https://github.com/user-attachments/assets/68808932-9d31-4a4a-aaea-f79e1130d221" />
+
+IM18: Subnet Terraform Code
+
+### Part 9: Creating an Internet Gateway with Terraform
+
+The next step was to create an Internet Gateway so the subnet, and eventually the instance, would have internet connectivity. The code can be seen in IM19. I associated the gateway with the VPC and gave it a tag/name.
+
+<img width="313" height="200" alt="Screenshot 2026-09-01 181540" src="https://github.com/user-attachments/assets/1c06fb03-98e1-4434-883f-7710250eadb5" />
+
+IM19: Internet Gateway Terraform Code. 
+
+### Part 10: Creating a Route Table with Terraform
+
+Next up was to create a route table so that how network traffic was being routed could be defined. The code for the route table can be seen in IM20&21. Again, I associated the route table with the VPC, gave the route a CIDR block, associated it with the internet gateway, and gave it a tag. I then associated the route table with my subnet as well. 
+
+<img width="357" height="252" alt="Screenshot 2026-09-01 181548" src="https://github.com/user-attachments/assets/1997b30a-2ba4-4f23-bfe7-6b83dd859fe9" />
+<img width="395" height="95" alt="Screenshot 2026-09-01 181909" src="https://github.com/user-attachments/assets/5d49b844-9689-45bc-9599-19c1eb0bb8bc" />
+
+IM20&21: Route Table and Route Table Association Terraform Code
+
+### Part 11: Creating Security Group with Terraform
+
+Now I needed to create the Security group so that the EC2 instance could have outbound traffic and restrict SSH access to only my IP address. The code for the security Group can be seen in IM22. I named the Security Group, associated it with the VPC, created the inbound and outbound rules, as well as giving it a tag. 
+
+<img width="446" height="491" alt="Screenshot 2026-09-01 182640" src="https://github.com/user-attachments/assets/08a67a9a-930e-4028-a7a0-e60d09d237f5" />
+
+IM22: Security Group Terraform Code
+
+### Part 12: Creating EC2 Instance with Terraform
+
+The last main resource to create was the EC2 instance. The code for the instance can be seen in IM23&24. In the code, I defined the type of OS, the name of the instance, the AMI data source, the instance details, including the instance type. I also added the subnet and security group to it so they could be associated with the instance as well. Now I had the full Terraform code for this Project (IM25).
+
+<img width="594" height="292" alt="Screenshot 2026-09-01 183003" src="https://github.com/user-attachments/assets/3c2b6e5c-978a-4253-ab33-a601943b13cb" />
+<img width="446" height="491" alt="Screenshot 2026-09-01 182640" src="https://github.com/user-attachments/assets/5bf3c5f0-5329-488b-aa5b-21523872f334" />
+
+IM23&24: EC2 Instance Terraform Code
+
+<img width="594" height="968" alt="Screenshot 2026-09-01 183108" src="https://github.com/user-attachments/assets/806cd8c5-28bf-435e-9904-83a09cbdc2f5" />
+
+IM25: Full Terraform Project Code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
