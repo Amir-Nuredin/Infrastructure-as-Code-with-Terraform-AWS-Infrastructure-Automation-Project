@@ -1,4 +1,4 @@
-# Infrastructure as Code with Terraform AWS Infrastructure Automation Project
+# Infrastructure as Code with Terraform: AWS Infrastructure Automation Project
 
 ## Objective
 
